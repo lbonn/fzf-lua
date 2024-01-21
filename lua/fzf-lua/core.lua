@@ -167,6 +167,10 @@ M.fzf_wrap = function(opts, contents, fn_selected)
       xpcall(function()
         opts.fn_selected(selected, opts)
       end, function(err)
+        -- ignore nvim swap file warning
+        if string.find(err, 'Vim(edit):E325', 1, true) then
+          return
+        end
         utils.err("fn_selected threw an error: " .. debug.traceback(err, 1))
       end)
     end
